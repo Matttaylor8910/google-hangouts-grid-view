@@ -1,6 +1,5 @@
 'use strict';
 
-console.log('gridview content');
 const setTimeoutPromise = (timeout) => new Promise((resolve) => setTimeout(resolve, timeout));
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
@@ -15,7 +14,6 @@ async function run() {
   if (isAlreadyOn) return disableGrid();
 
   function disableGrid() {
-    console.log('Disabling grid');
     // globalThis.__gv_mo && globalThis.__gv_mo.disconnect();
     for (const elem of document.querySelectorAll('.__gv_css')) elem.remove();
   }
@@ -29,23 +27,17 @@ async function run() {
     if (participantCount > 0) {
       wait = false;
     }
-    console.log('waiting to join call');
     await setTimeoutPromise(500);
   }
-
-  console.log('call joined, lets go');
-  console.log('Enabling grid');
 
   const container = document.querySelector('[data-participant-id][aria-label]').parentElement;
   container.classList.add('thumb-container');
   container.parentElement.classList.add('bottom-row-container');
   container.previousElementSibling.classList.add('bottom-controls');
 
-
   // Get one grid update going first..
   let pinnedIndex = -1;
   gridUpdateLoop();
-
 
   // update the grid whenever thumbnails are added/removed
   globalThis.__gv_mo = new MutationObserver(gridUpdateLoop);
@@ -99,76 +91,76 @@ function ensureStylesApplied() {
   if (document.querySelector('.__gv_css')) return;
 
   const styles = `
-.thumb-item {
-/* [jscontroller="XUjPoc"] { */
-    display: block;
-    width: 100% !important;
-    height: 100% !important;
-    transform: none !important;
-}
+    .thumb-item {
+    /* [jscontroller="XUjPoc"] { */
+        display: block;
+        width: 100% !important;
+        height: 100% !important;
+        transform: none !important;
+    }
 
-.thumb-item video {
-    width: 100%;
-    height: 100%;
-}
+    .thumb-item video {
+        width: 100%;
+        height: 100%;
+    }
 
-.thumb-container {
-/* [jscontroller="hw217b"] { */
-    display: grid;
-    direction: ltr;
-    position: static;
-    /* flex-wrap: wrap; */
-    grid-auto-rows: 1fr;
-    grid-template-columns: repeat(1, 1fr);
-    position: absolute;
-    top: 0 !important;
-    right: 0 !important;
-    left: 0 !important;
-    bottom: 0 !important;
-    padding: 0 !important;
-    height: 100vh;
-}
+    .thumb-container {
+    /* [jscontroller="hw217b"] { */
+        display: grid;
+        direction: ltr;
+        position: static;
+        /* flex-wrap: wrap; */
+        grid-auto-rows: 1fr;
+        grid-template-columns: repeat(1, 1fr);
+        position: absolute;
+        top: 0 !important;
+        right: 0 !important;
+        left: 0 !important;
+        bottom: 0 !important;
+        padding: 0 !important;
+        height: 100vh;
+    }
 
-/* could use a better selector */
-.thumb-item > div[jsname][style] {
-    width: 100% !important;
-    height: 100% !important;
-    opacity: 1;
-}
+    /* could use a better selector */
+    .thumb-item > div[jsname][style] {
+        width: 100% !important;
+        height: 100% !important;
+        opacity: 1;
+    }
 
-/* .p2hjYe.zDyG0c */
-.thumb-item [data-ssrc] {
-    width: 100% !important;
-    height: 100% !important;
-    /* avoid shifting thumbnails when one is selected. */
-    position: static !important;
-}
+    /* .p2hjYe.zDyG0c */
+    .thumb-item [data-ssrc] {
+        width: 100% !important;
+        height: 100% !important;
+        /* avoid shifting thumbnails when one is selected. */
+        position: static !important;
+    }
 
-.p2hjYe.rCuEk {
-  display: none;
-}
+    .p2hjYe.rCuEk {
+      display: none;
+    }
 
-/* .G1OBde { */
-.bottom-row-container {
-    position: static;
-}
+    /* .G1OBde { */
+    .bottom-row-container {
+        position: static;
+    }
 
-/* .L0HJ1e.cnqxLd-hJDwNd { */
-.bottom-controls {
-    bottom: 0;
-    height: auto;
-    left: 0;
-    position: absolute;
-    text-align: center;
-    right: 0;
-    z-index: 1;
-}
+    /* .L0HJ1e.cnqxLd-hJDwNd { */
+    .bottom-controls {
+        bottom: 0;
+        height: auto;
+        left: 0;
+        position: absolute;
+        text-align: center;
+        right: 0;
+        z-index: 1;
+    }
 
-/* TODO FIX THIS SELECTORRRR */
-.GhN39b {
-  z-index: 11;
-}
-    `;
+    /* TODO FIX THIS SELECTORRRR */
+    .GhN39b {
+      z-index: 11;
+    }
+  `;
 
   const elem = document.createElement('style');
   elem.append(document.createTextNode(styles));

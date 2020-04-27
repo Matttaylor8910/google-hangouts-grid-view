@@ -1,6 +1,6 @@
 {
   "name": "Hangouts Grid View",
-  "description": "Get some gridd",
+  "description": "Grid view for google hangouts",
   "version": "0.1",
   "background": {
     "scripts": ["gridview-background.js"],
